@@ -12,21 +12,22 @@ namespace WapiCatalogoEstudo.Domains
     {
         [Key]
         public int ProdutoId { get; set; }
+        
         [Required]
         [MaxLength(80)]
-
         public string Nome { get; set; }
+        
         [Required]
         [MaxLength(200)]
-
         public string Descrição { get; set; }
+        
         [Required]
-
         public decimal Preco { get; set; }
+        
         [Required]
         [MaxLength(200)]
-
         public string ImagemUrl { get; set; }
+        
         public float Estoque { get; set; }
         public DateTime DataCadastro { get; set; }
         

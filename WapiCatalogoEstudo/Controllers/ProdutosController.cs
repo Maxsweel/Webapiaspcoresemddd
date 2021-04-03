@@ -26,7 +26,7 @@ namespace WapiCatalogoEstudo.Controllers
         }
 
         //metodo de listagem em detalhe
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name ="ObterProduto")]
         public ActionResult<Produtos> Get(int id)
         {
             var produto = _context.Produtos.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
@@ -38,6 +38,22 @@ namespace WapiCatalogoEstudo.Controllers
             }
             return produto;
         }
+
+
+        [HttpPost]
+        public ActionResult Post([FromBody]Produtos produtos)
+        {
+            /* if(IModelState.IsValid)
+             {
+                 return BadRequest(ModelState);
+             }*/
+
+            _context.Produtos.Add(produtos);
+            _context.SaveChanges();
+            return new CreatedAtRouteResult("ObterProduto",
+                new { id = produtos.ProdutoId }, produtos);
+        }
+
 
     }
 }
