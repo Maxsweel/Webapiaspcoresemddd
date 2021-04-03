@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,21 @@ namespace WapiCatalogoEstudo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Produtos>> Get()
         {
-            return _context.Produtos.ToList();
+            return _context.Produtos.AsNoTracking().ToList();
+        }
+
+        //metodo de listagem em detalhe
+        [HttpGet("{id}")]
+        public ActionResult<Produtos> Get(int id)
+        {
+            var produto = _context.Produtos.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
+                .FirstOrDefault(p => p.ProdutoId == id);
+            if(produto == null)
+            {
+                return NotFound();
+
+            }
+            return produto;
         }
 
     }
