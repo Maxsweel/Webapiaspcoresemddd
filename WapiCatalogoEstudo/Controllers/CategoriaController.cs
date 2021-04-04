@@ -52,8 +52,16 @@ namespace WapiCatalogoEstudo.Controller
         }
 
 
+
+
+
+
+
+
+
+
         //LISTAGEM UNICA
-        [HttpGet("{id}", Name = "ObterCategoria")]
+        [HttpGet("{id:int:min(1)}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
             try
@@ -87,6 +95,7 @@ namespace WapiCatalogoEstudo.Controller
                 _context.SaveChanges();
                 return new CreatedAtRouteResult("ObterCategoria",
                     new { id = categoria.CategoriaId }, categoria);
+                
             }catch(Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao Inserir a categoria no banco de dados");
@@ -96,27 +105,27 @@ namespace WapiCatalogoEstudo.Controller
 
 
         //METODO DE EDIÇÃO
-        [HttpPut("{id}")]
+        [HttpPut("{id:int:min(1)}")]
         public ActionResult Put(int id, [FromBody] Categoria categoria)
         {
             try
             {
                 if (id != categoria.CategoriaId)
                 {
-                    return BadRequest();
+                    return BadRequest($"A categoria com id= {id} não foi encontrada");
                 }
                 _context.Entry(categoria).State = EntityState.Modified;
                 _context.SaveChanges();
-                return Ok();
+                return Ok($"Categoria atualizada com sucesso");
             }catch(Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao alterar a categoria no banco de dados");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar a categoria no banco de dados");
             }
         }
 
 
         //METODO DE EXCLUSÃO
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public ActionResult<Categoria> Delete(int id)
         {
             try
@@ -125,11 +134,11 @@ namespace WapiCatalogoEstudo.Controller
                 //var produtos = _context.Produtos.Find(id);
                 if (categoria == null)
                 {
-                    return BadRequest();
+                    return BadRequest($"A categoria com id= {id} não foi encontrada");
                 }
                 _context.Categorias.Remove(categoria);
                 _context.SaveChanges();
-                return Ok();
+                return Ok("A categoria com foi excluida com sucesso");
             }catch(Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao excluir a categoria no banco de dados");

@@ -35,7 +35,7 @@ namespace WapiCatalogoEstudo.Controllers
 
 
         //METODO DE LISTAGEM EM DETALHE
-        [HttpGet("{id}",Name ="ObterProduto")]
+        [HttpGet("{id:int:min(1)}",Name ="ObterProduto")]
         public ActionResult<Produtos> Get(int id)
         {
             try
@@ -77,7 +77,7 @@ namespace WapiCatalogoEstudo.Controllers
         }
 
         //METODO DE EDIÇÃO
-        [HttpPut("{id}")]
+        [HttpPut("{id:int:min(1)}")]
         public ActionResult Put(int id,[FromBody] Produtos produtos)
         {
             try
@@ -97,7 +97,7 @@ namespace WapiCatalogoEstudo.Controllers
 
 
         //METODO DE EXCLUSÃO
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int:min(1)}")]
         public ActionResult<Produtos> Delete(int id)
         {
             try
