@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "CebrRIuoXtF/keoFs2kW7+MmNwTsF8Ac/RYIdWXos52+jJtm7qUCmcng5SQAblP4KUB+4toxqe29m21ehYGjNA==",
+  "dgSpecHash": "1F7MkMuFQ8GWyqsiD0QdT/teQ4GHLY4cSeBgeH6VJp+kT1+NA9At8oQYpFX+IXiT3fYPZHQ2hhr9l5ptf5aUDg==",
   "success": true,
   "projectFilePath": "D:\\server_asp\\API\\WapiCatalogoEstudo\\WapiCatalogoEstudo\\WapiCatalogoEstudo.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.13\\microsoft.aspnetcore.jsonpatch.3.1.13.nupkg.sha512",
+    "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.13\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.13.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -25,7 +27,8 @@
     "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.extensions.options\\3.1.13\\microsoft.extensions.options.3.1.13.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.13\\microsoft.extensions.primitives.3.1.13.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\mysqlconnector\\0.69.9\\mysqlconnector.0.69.9.nupkg.sha512",
-    "C:\\Users\\maxsw\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512",
+    "C:\\Users\\maxsw\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
+    "C:\\Users\\maxsw\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\3.2.4\\pomelo.entityframeworkcore.mysql.3.2.4.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\pomelo.jsonobject\\2.2.1\\pomelo.jsonobject.2.2.1.nupkg.sha512",
     "C:\\Users\\maxsw\\.nuget\\packages\\system.collections.immutable\\1.7.1\\system.collections.immutable.1.7.1.nupkg.sha512",

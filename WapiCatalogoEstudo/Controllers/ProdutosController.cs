@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,13 @@ namespace WapiCatalogoEstudo.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Produtos>> Get()
         {
-            return _context.Produtos.AsNoTracking().ToList();
+            try
+            {
+                return _context.Produtos.AsNoTracking().ToList();
+            }catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter os produtos no banco de dados");
+            }
         }
 
 
@@ -31,14 +38,20 @@ namespace WapiCatalogoEstudo.Controllers
         [HttpGet("{id}",Name ="ObterProduto")]
         public ActionResult<Produtos> Get(int id)
         {
-            var produto = _context.Produtos.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
-                .FirstOrDefault(p => p.ProdutoId == id);
-            if(produto == null)
+            try
             {
-                return NotFound();
+                var produto = _context.Produtos.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
+                    .FirstOrDefault(p => p.ProdutoId == id);
+                if (produto == null)
+                {
+                    return NotFound();
 
+                }
+                return produto;
+            }catch(Exception)
+            { 
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter o produto no banco de dados"); 
             }
-            return produto;
         }
 
 
@@ -46,28 +59,40 @@ namespace WapiCatalogoEstudo.Controllers
         [HttpPost]
         public ActionResult Post([FromBody]Produtos produtos)
         {
-            /* if(IModelState.IsValid)
-             {
-                 return BadRequest(ModelState);
-             }*/
+            try
+            {
+                /* if(IModelState.IsValid)
+                 {
+                     return BadRequest(ModelState);
+                 }*/
 
-            _context.Produtos.Add(produtos);
-            _context.SaveChanges();
-            return new CreatedAtRouteResult("ObterProduto",
-                new { id = produtos.ProdutoId }, produtos);
+                _context.Produtos.Add(produtos);
+                _context.SaveChanges();
+                return new CreatedAtRouteResult("ObterProduto",
+                    new { id = produtos.ProdutoId }, produtos);
+            }catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir o produto no banco de dados");
+            }
         }
 
         //METODO DE EDIÇÃO
         [HttpPut("{id}")]
         public ActionResult Put(int id,[FromBody] Produtos produtos)
         {
-            if(id != produtos.ProdutoId)
-            { 
-                return BadRequest(); 
+            try
+            {
+                if (id != produtos.ProdutoId)
+                {
+                    return BadRequest();
+                }
+                _context.Entry(produtos).State = EntityState.Modified;
+                _context.SaveChanges();
+                return Ok();
+            }catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao alterar o produto no banco de dados");
             }
-            _context.Entry(produtos).State = EntityState.Modified;
-            _context.SaveChanges();
-            return Ok();
         }
 
 
@@ -75,15 +100,21 @@ namespace WapiCatalogoEstudo.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Produtos> Delete(int id)
         {
-            var produtos = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
-            //var produtos = _context.Produtos.Find(id);
-            if(produtos == null)
+            try
             {
-                return BadRequest();
+                var produtos = _context.Produtos.FirstOrDefault(p => p.ProdutoId == id);
+                //var produtos = _context.Produtos.Find(id);
+                if (produtos == null)
+                {
+                    return BadRequest();
+                }
+                _context.Produtos.Remove(produtos);
+                _context.SaveChanges();
+                return Ok();
+            }catch(Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao excluir o produto no banco de dados");
             }
-            _context.Produtos.Remove(produtos);
-            _context.SaveChanges();
-            return Ok();
         }
 
     }
