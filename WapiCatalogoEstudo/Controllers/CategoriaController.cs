@@ -23,13 +23,15 @@ namespace WapiCatalogoEstudo.Controller
             _context = contexto;
         }
 
+
+
         //LISTAGEM
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> Get()
+        public async Task <ActionResult<IEnumerable<Categoria>>> Get()
         {
             try
             {
-                return _context.Categorias.AsNoTracking().ToList();
+                return await _context.Categorias.AsNoTracking().ToListAsync();
             }
             catch (Exception) 
             {
@@ -40,11 +42,11 @@ namespace WapiCatalogoEstudo.Controller
 
         //PRODUTOS RELACIONADOS
         [HttpGet("Produtos")]
-        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos()
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
         {
             try
             {
-                return _context.Categorias.Include(x => x.Produtos).ToList();
+                return await _context.Categorias.Include(x => x.Produtos).ToListAsync();
             }catch(Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao obter o produto da categoria no banco de dados");
@@ -54,20 +56,14 @@ namespace WapiCatalogoEstudo.Controller
 
 
 
-
-
-
-
-
-
         //LISTAGEM UNICA
         [HttpGet("{id:int:min(1)}", Name = "ObterCategoria")]
-        public ActionResult<Categoria> Get(int id)
+        public async Task<ActionResult<Categoria>> Get(int id)
         {
             try
             {
-                var categoria = _context.Categorias.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
-                    .FirstOrDefault(c => c.CategoriaId == id);
+                var categoria = await _context.Categorias.AsNoTracking()//.AsNoTracking só é chamando se o comando for somente parar listar
+                    .FirstOrDefaultAsync(c => c.CategoriaId == id);
                 if (categoria == null)
                 {
                     return NotFound($"A categoria com id= {id} não foi encontrada");
@@ -82,21 +78,18 @@ namespace WapiCatalogoEstudo.Controller
 
         //metodo de adição
         [HttpPost]
-        public ActionResult Post([FromBody] Categoria categoria)
+        public async Task <ActionResult> Post([FromBody] Categoria categoria)
         {
             try
             {
-                /* if(IModelState.IsValid)
-                 {
-                     return BadRequest(ModelState);
-                 }*/
 
-                _context.Categorias.Add(categoria);
-                _context.SaveChanges();
-                return new CreatedAtRouteResult("ObterCategoria",
-                    new { id = categoria.CategoriaId }, categoria);
-                
-            }catch(Exception)
+                await _context.Categorias.AddAsync(categoria);
+                await _context.SaveChangesAsync();
+                return new CreatedAtRouteResult("ObterCategoria", new { id = categoria.CategoriaId }, categoria);
+
+
+            }
+            catch(Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao Inserir a categoria no banco de dados");
             }
@@ -106,7 +99,7 @@ namespace WapiCatalogoEstudo.Controller
 
         //METODO DE EDIÇÃO
         [HttpPut("{id:int:min(1)}")]
-        public ActionResult Put(int id, [FromBody] Categoria categoria)
+        public async Task<ActionResult> Put(int id, [FromBody] Categoria categoria)
         {
             try
             {
@@ -115,7 +108,7 @@ namespace WapiCatalogoEstudo.Controller
                     return BadRequest($"A categoria com id= {id} não foi encontrada");
                 }
                 _context.Entry(categoria).State = EntityState.Modified;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok($"Categoria atualizada com sucesso");
             }catch(Exception)
             {
@@ -126,18 +119,18 @@ namespace WapiCatalogoEstudo.Controller
 
         //METODO DE EXCLUSÃO
         [HttpDelete("{id:int:min(1)}")]
-        public ActionResult<Categoria> Delete(int id)
+        public async Task<ActionResult<Categoria>> Delete(int id)
         {
             try
             {
-                var categoria = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
-                //var produtos = _context.Produtos.Find(id);
+                // var categoria = await _context.Categorias.FirstOrDefaultAsync(c => c.CategoriaId == id);
+                var categoria = await _context.Categorias.FindAsync(id);
                 if (categoria == null)
                 {
                     return BadRequest($"A categoria com id= {id} não foi encontrada");
                 }
                 _context.Categorias.Remove(categoria);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return Ok("A categoria com foi excluida com sucesso");
             }catch(Exception)
             {
